@@ -17,7 +17,7 @@
   --INACTIVE: lightgray;
   --LINK-COLOR: whitesmoke;
   --LINK-HOVER: rgba(245, 245, 245, 0.9);
-  --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+  --QUOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
   --STATUS-COMPLETE: limegreen;
   --STATUS-OPEN: firebrick;
   --TABLE-BGCOLOR: #FFF;
@@ -225,23 +225,23 @@ tr {
   background-color: var(--INACTIVE);
 }
 
-/* ||  NOTE */
+/* ||  QUOTE */
 
-.note__created,
-.note__updated,
-.note__username {
+.quote__created,
+.quote__updated,
+.quote__username {
   display: none;
 }
 
-.note__status {
+.quote__status {
   font-weight: bold;
 }
 
-.note__status--open {
+.quote__status--open {
   color: var(--STATUS-OPEN);
 }
 
-.note__status--completed {
+.quote__status--completed {
   color: var(--STATUS-COMPLETE);
 }
 
@@ -354,13 +354,13 @@ tr {
     font-size: 1.5rem;
   }
 
-  .table--notes {
+  .table--quotes {
     grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
   }
 
-  .note__created,
-  .note__updated,
-  .note__username {
+  .quote__created,
+  .quote__updated,
+  .quote__username {
     display: block
   }
 

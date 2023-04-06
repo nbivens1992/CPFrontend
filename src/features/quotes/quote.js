@@ -19,16 +19,11 @@ const Quote = ({ quoteId }) => {
 
         return (
             <tr className="table__row">
-                <td className="table__cell quote__status">
-                    {quote.completed
-                        ? <span className="quote__status--completed">Completed</span>
-                        : <span className="quote__status--open">Open</span>
-                    }
-                </td>
                 <td className="table__cell quote__created">{quote.galReq}</td>
                 <td className="table__cell quote__updated">{reqDate}</td>
                 <td className="table__cell quote__title">{quote.sPrice}</td>
                 <td className="table__cell quote__username">{quote.amountDue}</td>
+                <td className="table__cell quote__username">{quote.username}</td>
 
                 <td className="table__cell">
                     <button
