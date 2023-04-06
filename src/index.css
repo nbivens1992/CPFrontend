@@ -10,7 +10,7 @@
 
 :root {
   /* COLORS */
-  --BGCOLOR: #0F172A;
+  --BGCOLOR: #2a0f0f;
   --BORDER-COLOR: #FFF;
   --COLOR: #FFF;
   --ERROR: firebrick;
@@ -64,7 +64,7 @@ body {
   min-height: 100vh;
   background-color: var(--BGCOLOR);
   color: var(--COLOR);
-  background-image: url('./img/background.jpg');
+  background-image: url('./img/UHbackground.png');
   background-size: cover;
   background-position: top right;
   background-blend-mode: multiply;
