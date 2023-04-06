@@ -6,6 +6,11 @@ import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
 import QuotesList from './features/quotes/QuotesList'
 import UsersList from './features/users/UsersList'
+import EditUser from './features/users/EditUser'
+import NewUserForm from './features/users/NewUserForm'
+import EditQuote from './features/quotes/EditQuote'
+import NewQuote from './features/quotes/NewQuote'
+import Prefetch from './features/auth/Prefetch'
 
 function App() {
   return (
@@ -14,19 +19,25 @@ function App() {
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
 
-        <Route path="dash" element={<DashLayout />}>
+        <Route element={<Prefetch />}>
+          <Route path="dash" element={<DashLayout />}>
 
-          <Route index element={<Welcome />} />
+            <Route index element={<Welcome />} />
 
-          <Route path="quotes">
-            <Route index element={<QuotesList />} />
-          </Route>
+            <Route path="users">
+              <Route index element={<UsersList />} />
+              <Route path=":id" element={<EditUser />} />
+              <Route path="new" element={<NewUserForm />} />
+            </Route>
 
-          <Route path="users">
-            <Route index element={<UsersList />} />
-          </Route>
+            <Route path="quotes">
+              <Route index element={<QuotesList />} />
+              <Route path=":id" element={<EditQuote />} />
+              <Route path="new" element={<NewQuote />} />
+            </Route>
 
-        </Route>{/* End Dash */}
+          </Route>{/* End Dash */}
+        </Route>
 
       </Route>
     </Routes>

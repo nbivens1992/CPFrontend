@@ -17,7 +17,6 @@ export const quotesApiSlice = apiSlice.injectEndpoints({
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
-            keepUnusedDataFor: 5,
             transformResponse: responseData => {
                 const loadedQuotes = responseData.map(quote => {
                     quote.id = quote._id
@@ -34,11 +33,48 @@ export const quotesApiSlice = apiSlice.injectEndpoints({
                 } else return [{ type: 'Quote', id: 'LIST' }]
             }
         }),
+        addNewQuote: builder.mutation({
+            query: initialQuote => ({
+                url: '/quotes',
+                method: 'POST',
+                body: {
+                    ...initialQuote,
+                }
+            }),
+            invalidatesTags: [
+                { type: 'Quote', id: "LIST" }
+            ]
+        }),
+        updateQuote: builder.mutation({
+            query: initialQuote => ({
+                url: '/quotes',
+                method: 'PATCH',
+                body: {
+                    ...initialQuote,
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Quote', id: arg.id }
+            ]
+        }),
+        deleteQuote: builder.mutation({
+            query: ({ id }) => ({
+                url: `/quotes`,
+                method: 'DELETE',
+                body: { id }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Quote', id: arg.id }
+            ]
+        }),
     }),
 })
 
 export const {
     useGetQuotesQuery,
+    useAddNewQuoteMutation,
+    useUpdateQuoteMutation,
+    useDeleteQuoteMutation
 } = quotesApiSlice
 
 // returns the query result object

@@ -18,7 +18,7 @@ const Public = () => {
                 <p>Owner: Nick Bivens</p>
             </main>
             <footer>
-                <Link to="/login">Employee Login</Link>
+                <Link to="/login">Login to receive your quote today!</Link>
             </footer>
         </section>
 
