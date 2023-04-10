@@ -8,7 +8,12 @@ const QuotesList = () => {
         isSuccess,
         isError,
         error
-    } = useGetQuotesQuery()
+    } = useGetQuotesQuery(undefined, {
+        pollingInterval: 15000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+
 
     let content
 
@@ -33,6 +38,7 @@ const QuotesList = () => {
                         <th scope="col" className="table__th quote__created">Date Requested</th>
                         <th scope="col" className="table__th quote__updated">Price/Gallon</th>
                         <th scope="col" className="table__th quote__title">Sugggested Price</th>
+                        <th scope="col" className="table__th quote__title">Delivery Address</th>
                         <th scope="col" className="table__th quote__username">Owner</th>
                         <th scope="col" className="table__th quote__edit">Edit</th>
                     </tr>

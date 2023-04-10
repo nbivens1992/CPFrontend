@@ -275,6 +275,11 @@ tr {
   align-items: center;
 }
 
+.form__input:read-only{
+  background-color: var(--INACTIVE);
+  cursor: not-allowed;
+}
+
 .form__input,
 .form__submit-button {
   padding: 0.5em;
@@ -355,7 +360,7 @@ tr {
   }
 
   .table--quotes {
-    grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
+    grid-template-columns: repeat(7,1fr);
   }
 
   .quote__created,

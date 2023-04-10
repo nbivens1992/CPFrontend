@@ -4,7 +4,8 @@ import { useAddNewQuoteMutation } from "./quotesApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 
-const NewQuoteForm = ({ users }) => {
+
+const NewQuoteForm = ({ users, userInfo }) => {
 
     const [addNewQuote, {
         isLoading,
@@ -18,7 +19,7 @@ const NewQuoteForm = ({ users }) => {
     const [galReq, setGalReq] = useState('')
     const [dDate, setDDate] = useState('')
     const [sPrice, setSPrice] = useState('')
-    const [amountDue, setAmountDue] = useState('')
+    let [amountDue, setAmountDue] = useState('')
     const [userId, setUserId] = useState('6429e5477dfd607d1e18273b')
 
     useEffect(() => {
@@ -32,11 +33,14 @@ const NewQuoteForm = ({ users }) => {
         }
     }, [isSuccess, navigate])
 
+    let address = userInfo.address1 + ", " + userInfo.city+ ", "+ userInfo.state+ " "+userInfo.zip
+    
+        
+
     const onGalReqChanged = e => setGalReq(e.target.value)
     const onDDateChanged = e => setDDate(e.target.value)
     const onSPriceChanged = e => setSPrice(e.target.value)
     const onAmountDueChanged = e => setAmountDue(e.target.value)
-    const onUserIdChanged = e => setUserId(e.target.value)
 
     const canSave = [galReq, dDate, sPrice, userId].every(Boolean) && !isLoading
 
@@ -52,7 +56,7 @@ const NewQuoteForm = ({ users }) => {
     const validGalReqClass = !galReq ? "form__input--incomplete" : ''
     const validDDateClass = !dDate ? "form__input--incomplete" : ''
     const validSPriceClass = !sPrice ? "form__input--incomplete" : ''
-    const validAmountDueClass = !amountDue ? "form__input--incomplete" : ''
+    
 
     const content = (
         <>
@@ -80,6 +84,7 @@ const NewQuoteForm = ({ users }) => {
                     type="number"
                     autoComplete="off"
                     value={galReq}
+                    required  maxlength="50"
                     onChange={onGalReqChanged}
                 />
 
@@ -91,6 +96,7 @@ const NewQuoteForm = ({ users }) => {
                     name="dDate"
                     type = "date"
                     value={dDate}
+                    required
                     onChange={onDDateChanged}
                 />
                 <label className="form__label" htmlFor="galReq">
@@ -102,29 +108,33 @@ const NewQuoteForm = ({ users }) => {
                     type="number"
                     autoComplete="off"
                     value={sPrice}
+                    required 
                     onChange={onSPriceChanged}
                 />
                 <label className="form__label" htmlFor="galReq">
                     Total Quote Price:</label>
                 <input
-                    className={`form__input ${validAmountDueClass}`}
+                    className={`form__input`}
                     id="amountDue"
                     name="amountDue"
                     type="number"
                     autoComplete="off"
-                    value={amountDue}
+                    value={amountDue=sPrice*galReq}
+                    readonly
+                    disabled="disabled"
                     onChange={onAmountDueChanged}
                 />
-
-                <label className="form__label form__checkbox-container" htmlFor="username">
-                    ASSIGNED TO:</label>
+                <label className="form__label" htmlFor="galReq">
+                    Delivery Address:</label>
                 <input
-                    id="username"
-                    name="username"
-                    className="form__select"
-                    value={userId}
+                    className={`form__input`}
+                    id="address"
+                    name="address"
+                    type="test"
+                    autoComplete="off"
+                    value={address}
                     readonly
-                    onChange={onUserIdChanged}
+                    disabled="disabled"
                 />
 
             </form>

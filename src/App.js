@@ -1,13 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Public from './components/Public'
-import Login from './features/auth/Login';
+import Login from './features/auth/Login'
 import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
 import QuotesList from './features/quotes/QuotesList'
 import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
+import NewUserInfoForm from './features/users/NewUserInfoForm'
+
 import NewUserForm from './features/users/NewUserForm'
+
 import EditQuote from './features/quotes/EditQuote'
 import NewQuote from './features/quotes/NewQuote'
 import Prefetch from './features/auth/Prefetch'
@@ -27,7 +30,7 @@ function App() {
             <Route path="users">
               <Route index element={<UsersList />} />
               <Route path=":id" element={<EditUser />} />
-              <Route path="new" element={<NewUserForm />} />
+              <Route path="new" element={<NewUserInfoForm />} />
             </Route>
 
             <Route path="quotes">

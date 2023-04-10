@@ -8,36 +8,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 
 
-const USER_REGEX = /^[A-z]{3,20}$/
-const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
 
-
-const NewUserForm = () => {
+const NewUserInfoForm = () => {
     let users= useSelector(selectAllUsers)
 
     let size = users.length
-    
-    const [addNewUser, {
+
+    const [addNewUserInfo, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useAddNewUserMutation()
-
-    const [addNewUserInfo, {
-        userInfoIsLoading,
-        userInfoIsSuccess,
-        userInfoIsError,
-        userInfoError
     }] = useAddNewUserInfoMutation()
 
     const navigate = useNavigate()
 
-    const [username, setUsername] = useState('')
-    const [validUsername, setValidUsername] = useState(false)
-    const [password, setPassword] = useState('')
-    const [validPassword, setValidPassword] = useState(false)
-
+    const [user, setUser] = useState('64339abfbdb5568df2189dba')
     const [fullName, setFullName] = useState('')
     const [address1, setAddress1] = useState('')
     const [address2, setAddress2] = useState('')
@@ -46,23 +32,7 @@ const NewUserForm = () => {
     const [zip, setZip] = useState('')
 
     useEffect(() => {
-        setValidUsername(USER_REGEX.test(username))
-    }, [username])
-
-    useEffect(() => {
-        setValidPassword(PWD_REGEX.test(password))
-    }, [password])
-
-    useEffect(() => {
         if (isSuccess) {
-            setUsername('')
-            setPassword('')
-            navigate('/dash/users')
-        }
-    }, [isSuccess, navigate])
-
-    useEffect(() => {
-        if (userInfoIsSuccess) {
             setFullName('')
             setAddress1('')
             setAddress2('')
@@ -71,10 +41,8 @@ const NewUserForm = () => {
             setZip('')
             navigate('/dash')
         }
-    }, [userInfoIsSuccess, navigate])
+    }, [isSuccess, navigate])
 
-    const onUsernameChanged = e => setUsername(e.target.value)
-    const onPasswordChanged = e => setPassword(e.target.value)
 
     const onFullNameChanged = e => setFullName(e.target.value)
     const onAddress1Changed = e => setAddress1(e.target.value)
@@ -83,30 +51,24 @@ const NewUserForm = () => {
     const onStateChanged = e => setState(e.target.value)
     const onZipChanged = e => setZip(e.target.value)
 
-    const canSave = [validUsername, validPassword].every(Boolean) && !isLoading && !userInfoIsLoading
+    const canSave =  !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ username, password })
-            let myId=users[size+1].id
-            await addNewUserInfo({myId,fullName, address1, address2, city, state, zip})
+            await addNewUserInfo({user,fullName, address1, address2, city, state, zip})
         }
     }
 
 
-    const errClass = isError|| userInfoIsError ? "errmsg" : "offscreen"
-    
-
-    const validUserClass = !validUsername ? 'form__input--incomplete' : ''
-    const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
+    const errClass = isError ? "errmsg" : "offscreen"
 
 
     const content = (
         <>
             <p className={errClass}>{error?.data?.message}</p>
 
-            <form className="form" onSubmit={onSaveUserClicked}>
+            <form className="form" onSubmit={onSaveUserClicked }>
                 <div className="form__title-row">
                     <h2>New User</h2>
                     <div className="form__action-buttons">
@@ -119,28 +81,6 @@ const NewUserForm = () => {
                         </button>
                     </div>
                 </div>
-                <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
-                <input
-                    className={`form__input ${validUserClass}`}
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    value={username}
-                    onChange={onUsernameChanged}
-                />
-
-                <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
-                <input
-                    className={`form__input ${validPwdClass}`}
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChanged}
-                />
                 <label className="form__label" htmlFor="fullName">
                     Full Name: </label>
                 <input
@@ -260,4 +200,4 @@ const NewUserForm = () => {
 
     return content
 }
-export default NewUserForm
+export default NewUserInfoForm

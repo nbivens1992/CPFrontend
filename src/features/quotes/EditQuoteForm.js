@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMonument, faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
-const EditQuoteForm = ({ quote, users }) => {
+const EditQuoteForm = ({ quote, users, userInfo}) => {
 
     const [updateQuote, {
         isLoading,
@@ -23,9 +23,14 @@ const EditQuoteForm = ({ quote, users }) => {
 
     const [galReq, setGalReq] = useState(quote.galReq)
     const [dDate, setDDate] = useState(quote.dDate)
+
+
+    const reqDate = new Date(quote.dDate).toLocaleString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' })
     const [sPrice, setSPrice] = useState(quote.sPrice)
-    const [amountDue, setAmountDue] = useState(quote.amountDue)
+    let [amountDue, setAmountDue] = useState(quote.amountDue)
     const [userId, setUserId] = useState(quote.user)
+
+    let address = userInfo.address1 + ", " + userInfo.city+ ", "+ userInfo.state+ " "+userInfo.zip
 
 
     useEffect(() => {
@@ -45,7 +50,6 @@ const EditQuoteForm = ({ quote, users }) => {
     const onDDateChanged = e => setDDate(e.target.value)
     const onSPriceChanged = e => setSPrice(e.target.value)
     const onAmountDueChanged = e => setAmountDue(e.target.value)
-    const onUserIdChanged = e => setUserId(e.target.value)
     
 
     const canSave = [galReq, dDate,sPrice, userId].every(Boolean) && !isLoading
@@ -60,15 +64,6 @@ const EditQuoteForm = ({ quote, users }) => {
         await deleteQuote({ id: quote.id })
     }
 
-    const options = users.map(user => {
-        return (
-            <option
-                key={user.id}
-                value={user.id}
-
-            > {user.username}</option >
-        )
-    })
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validGalReqClass = !galReq ? "form__input--incomplete" : ''
@@ -113,6 +108,7 @@ const EditQuoteForm = ({ quote, users }) => {
                     name="galReq"
                     type="number"
                     autoComplete="off"
+                    required
                     value={galReq}
                     onChange={onGalReqChanged}
                 />
@@ -125,7 +121,8 @@ const EditQuoteForm = ({ quote, users }) => {
                     name="dDate"
                     type ="date"
                     autoComplete="off"
-                    value={dDate}
+                    required
+                    value={reqDate}
                     onChange={onDDateChanged}
                 />
                 <label className="form__label" htmlFor="quote-galReq">
@@ -136,6 +133,7 @@ const EditQuoteForm = ({ quote, users }) => {
                     name="sPrice"
                     type="number"
                     autoComplete="off"
+                    required
                     value={sPrice}
                     onChange={onSPriceChanged}
                 />
@@ -147,8 +145,20 @@ const EditQuoteForm = ({ quote, users }) => {
                     name="amountDue"
                     type="number"
                     autoComplete="off"
-                    value={amountDue}
+                    readonly
+                    value={amountDue=galReq*sPrice}
                     onChange={onAmountDueChanged}
+                />
+                <label className="form__label" htmlFor="galReq">
+                    Delivery Address:</label>
+                <input
+                    className={`form__input ${validAmountDueClass}`}
+                    id="amountDue"
+                    name="amountDue"
+                    type="test"
+                    autoComplete="off"
+                    value={address}
+                    readonly
                 />
                 <div className="form__row">
                     <div className="form__divider">
@@ -160,7 +170,7 @@ const EditQuoteForm = ({ quote, users }) => {
                                 name="username"
                                 type="text"
                                 autoComplete="off"
-                                value={userId}
+                                value={quote.username}
                                 readonly
                                // onChange={onUserIdChanged}
                             
