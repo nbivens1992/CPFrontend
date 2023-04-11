@@ -99,19 +99,20 @@ const EditUserForm = ({ user, userInfo }) => {
 
     const onSaveUserClicked = async (e) => {
         if (address2) {
-           // await updateUser({ id: user.id, username, password})
+            await updateUser({ id: user.id, username, password})
             await updateUserInfo({ id: userInfo.id, user: myUser, fullName, address1, address2, city, state, zip })
             navigate('/dash')
         } else {
-            //await updateUser({ id: user.id, username})
+            await updateUser({ id: user.id, username})
             await updateUserInfo({ id: userInfo.id, user: myUser , fullName, address1, address2, city, state, zip })
             navigate('/dash')
         }
     }
 
     const onDeleteUserClicked = async () => {
-        //await deleteUser({ id: user.id })
+        await deleteUser({ id: user.id })
         await deleteUserInfo({id: userInfo.id})
+        navigate('/dash')
     }
 
    

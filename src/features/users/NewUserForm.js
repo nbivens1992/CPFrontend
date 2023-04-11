@@ -149,6 +149,7 @@ const NewUserForm = () => {
                     name="fullName"
                     type="text"
                     value={fullName}
+                    maxlength="50"
                     onChange={onFullNameChanged}
                 />
                 <label className="form__label" htmlFor="address">
@@ -159,6 +160,7 @@ const NewUserForm = () => {
                     name="address"
                     type="text"
                     value={address1}
+                    maxlength="100"
                     onChange={onAddress1Changed}
                 />
                 <label className="form__label" htmlFor="address2">
@@ -169,6 +171,7 @@ const NewUserForm = () => {
                     name="address2"
                     type="text"
                     value={address2}
+                    maxlength="100"
                     onChange={onAddress2Changed}
                 />
                 <label className="form__label" htmlFor="city">
@@ -179,6 +182,7 @@ const NewUserForm = () => {
                     name="city"
                     type="text"
                     value={city}
+                    maxlength="100"
                     onChange={onCityChanged}
                 />
                 <label className="form__label" htmlFor="city">
@@ -188,6 +192,7 @@ const NewUserForm = () => {
                     id="city"
                     name="city"
                     type="text"
+                    maxlength="2"
                     value={state}
                     onChange={onStateChanged}
                 >
@@ -252,6 +257,7 @@ const NewUserForm = () => {
                     name="Zip"
                     type="text"
                     value={zip}
+                    maxlength="9"
                     onChange={onZipChanged}
                 />
             </form>

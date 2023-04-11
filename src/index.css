@@ -124,6 +124,7 @@ a:focus-visible {
   margin-top: 1em;
 }
 
+.public__link a::before,
 .welcome a::before {
   content: "➜ "
 }
@@ -277,7 +278,6 @@ tr {
 
 .form__input:read-only{
   background-color: var(--INACTIVE);
-  cursor: not-allowed;
 }
 
 .form__input,

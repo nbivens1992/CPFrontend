@@ -13,12 +13,16 @@ const Public = () => {
                     4455 University Dr<br />
                     Houston, TX 77204<br />
                     <a href="tel:+2813308004">(555) 555-5555</a>
-                </address>
-                <br />
-                <p>Owner: Nick Bivens</p>
+                </address>     
+                <section className="public__link">
+                    <br />
+                    <p><Link to="/login">Login to receive your quote today!</Link></p>
+                </section>         
+                
             </main>
+            
             <footer>
-                <Link to="/login">Login to receive your quote today!</Link>
+            <p>Cougar Petroleum Staff: Nick Bivens      Binh Pham       Bryan Abner     Corey Dillard    </p>
             </footer>
         </section>
 

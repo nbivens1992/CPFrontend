@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { useAddNewQuoteMutation } from "./quotesApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+import { selectAllQuotes } from './quotesApiSlice'
+import { useSelector } from 'react-redux'
 
 
 const NewQuoteForm = ({ users, userInfo }) => {
@@ -18,7 +20,7 @@ const NewQuoteForm = ({ users, userInfo }) => {
 
     const [galReq, setGalReq] = useState('')
     const [dDate, setDDate] = useState('')
-    const [sPrice, setSPrice] = useState('')
+    let [sPrice, setSPrice] = useState('')
     let [amountDue, setAmountDue] = useState('')
     const [userId, setUserId] = useState('6429e5477dfd607d1e18273b')
 
@@ -57,6 +59,23 @@ const NewQuoteForm = ({ users, userInfo }) => {
     const validDDateClass = !dDate ? "form__input--incomplete" : ''
     const validSPriceClass = !sPrice ? "form__input--incomplete" : ''
     
+    let inState = .04
+    if(userInfo.state === 'TX'){
+        inState = .02;
+    }
+
+    let userQuotes = useSelector(selectAllQuotes)
+    let usedBefore = 0
+    if(userQuotes.includes(userInfo.username)){
+        usedBefore = .01
+    }
+
+    let reqFactor = .03
+    if(galReq >= 1000){
+        reqFactor = .02
+    }
+    const startPrice = 1.5
+    const coProfit = .1
 
     const content = (
         <>
@@ -65,15 +84,6 @@ const NewQuoteForm = ({ users, userInfo }) => {
             <form className="form" onSubmit={onSaveQuoteClicked}>
                 <div className="form__galReq-row">
                     <h2>New Quote</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            galReq="Save"
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                    </div>
                 </div>
                 <label className="form__label" htmlFor="galReq">
                     Gallons Requested:</label>
@@ -107,7 +117,7 @@ const NewQuoteForm = ({ users, userInfo }) => {
                     name="sPrice"
                     type="number"
                     autoComplete="off"
-                    value={sPrice}
+                    value={sPrice = startPrice*(1+inState-usedBefore+reqFactor+coProfit)}
                     required 
                     onChange={onSPriceChanged}
                 />
@@ -136,6 +146,16 @@ const NewQuoteForm = ({ users, userInfo }) => {
                     readonly
                     disabled="disabled"
                 />
+                <div className="form__action-buttons">
+                        <button
+                            className="form__submit-button"
+                            galReq="Save"
+                            disabled={!canSave}
+                            text ="Submit"
+                        >
+                          Submit Quote 
+                        </button>
+                </div>
 
             </form>
         </>
