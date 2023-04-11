@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { useAddNewQuoteMutation } from "./quotesApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+import { selectAllQuotes } from '../users/quotesApiSlice'
+
 
 
 const NewQuoteForm = ({ users, userInfo }) => {
@@ -57,6 +59,24 @@ const NewQuoteForm = ({ users, userInfo }) => {
     const validDDateClass = !dDate ? "form__input--incomplete" : ''
     const validSPriceClass = !sPrice ? "form__input--incomplete" : ''
     
+    let inState = .04
+    if(userInfo.state == 'TX'){
+        inState = .02;
+    }
+
+    let userQuotes = useSelector(selectAllQuotes)
+    let usedBefore = 0
+    if(userQuotes.includes(userInfo.username)){
+        usedBefore = .01
+    }
+
+    let reqFactor = .03
+    if(galReq >= 1000){
+        reqFactor = .02
+    }
+
+    const coProfit = .1
+
 
     const content = (
         <>
@@ -119,7 +139,7 @@ const NewQuoteForm = ({ users, userInfo }) => {
                     name="amountDue"
                     type="number"
                     autoComplete="off"
-                    value={amountDue=sPrice*galReq}
+                    value={amountDue=sPrice*galReq*(1+inState-usedBefore+reqFactor+coProfit)}
                     readonly
                     disabled="disabled"
                     onChange={onAmountDueChanged}
