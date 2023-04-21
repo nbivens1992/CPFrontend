@@ -17,6 +17,7 @@ const Public = () => {
                 <section className="public__link">
                     <br />
                     <p><Link to="/login">Login to receive your quote today!</Link></p>
+                    <p><Link to="/new">Sign up by clicking this link!</Link></p>
                 </section>         
                 
             </main>

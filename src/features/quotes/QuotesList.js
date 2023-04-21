@@ -8,7 +8,7 @@ const QuotesList = () => {
         isSuccess,
         isError,
         error
-    } = useGetQuotesQuery(undefined, {
+    } = useGetQuotesQuery('QuotesList', {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
