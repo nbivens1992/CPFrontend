@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAddNewQuoteMutation } from "./quotesApiSlice"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave } from "@fortawesome/free-solid-svg-icons"
 import { selectAllQuotes } from './quotesApiSlice'
 import { useSelector } from 'react-redux'
 
 
-const NewQuoteForm = ({ users, userInfo }) => {
+const NewQuoteForm = ({ user, userInfo }) => {
 
     const [addNewQuote, {
         isLoading,
@@ -22,7 +20,7 @@ const NewQuoteForm = ({ users, userInfo }) => {
     const [dDate, setDDate] = useState('')
     let [sPrice, setSPrice] = useState('')
     let [amountDue, setAmountDue] = useState('')
-    const [userId, setUserId] = useState('6429e5477dfd607d1e18273b')
+    const [userId, setUserId] = useState(user.id)
 
     useEffect(() => {
         if (isSuccess) {
@@ -44,12 +42,12 @@ const NewQuoteForm = ({ users, userInfo }) => {
     const onSPriceChanged = e => setSPrice(e.target.value)
     const onAmountDueChanged = e => setAmountDue(e.target.value)
 
-    const canSave = [galReq, dDate, sPrice, userId].every(Boolean) && !isLoading
+    const canSave = [galReq, dDate, userId].every(Boolean) && !isLoading
 
     const onSaveQuoteClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewQuote({ user: userId, galReq, dDate, sPrice, amountDue })
+            await addNewQuote({ user: userId, galReq, dDate , sPrice, amountDue })
         }
     }
 
@@ -99,7 +97,7 @@ const NewQuoteForm = ({ users, userInfo }) => {
                 />
 
                 <label className="form__label" htmlFor="dDate">
-                    Due Date:</label>
+                    Preferred Delivery Date:</label>
                 <input
                     className={`form__input form__input--dDate ${validDDateClass}`}
                     id="dDate"
@@ -117,8 +115,9 @@ const NewQuoteForm = ({ users, userInfo }) => {
                     name="sPrice"
                     type="number"
                     autoComplete="off"
+                    readonly
+                    disabled="disabled"
                     value={sPrice = startPrice*(1+inState-usedBefore+reqFactor+coProfit)}
-                    required 
                     onChange={onSPriceChanged}
                 />
                 <label className="form__label" htmlFor="galReq">

@@ -1,7 +1,10 @@
 import { useGetQuotesQuery } from "./quotesApiSlice"
 import Quote from "./quote"
+import useAuth from "../../hooks/useAuth"
 
 const QuotesList = () => {
+    const {username} = useAuth()
+    
     const {
         data: quotes,
         isLoading,
@@ -24,11 +27,12 @@ const QuotesList = () => {
     }
 
     if (isSuccess) {
-        const { ids } = quotes
+        const { ids,entities } = quotes
+        let filteredIds
+        filteredIds = ids.filter(quoteId => entities[quoteId].username === username)
 
-        const tableContent = ids?.length
-            ? ids.map(quoteId => <Quote key={quoteId} quoteId={quoteId} />)
-            : null
+
+        const tableContent = ids?.length && filteredIds.map(quoteId => <Quote key={quoteId} quoteId={quoteId} />)
 
         content = (
             <table className="table table--quotes">

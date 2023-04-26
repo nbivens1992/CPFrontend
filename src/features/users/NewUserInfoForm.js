@@ -1,19 +1,21 @@
-import { useState, useEffect } from "react"
-import { useAddNewUserMutation } from "./usersApiSlice"
-import { selectAllUsers } from "./usersApiSlice"
-import { useSelector } from 'react-redux'
+import { useState, useEffect} from "react"
 import { useAddNewUserInfoMutation } from "../userInfos/userInfosApiSlice"
+
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
-
+import { useSelector } from "react-redux"
+import useAuth from "../../hooks/useAuth"
+import { selectAllUsers } from "./usersApiSlice"
 
 
 const NewUserInfoForm = () => {
-    let users= useSelector(selectAllUsers)
+    const users = useSelector(selectAllUsers)
+    const {username} = useAuth()
 
-    let size = users.length
 
+    var user = users.find(user => user.username === username)
+    
     const [addNewUserInfo, {
         isLoading,
         isSuccess,
@@ -23,7 +25,10 @@ const NewUserInfoForm = () => {
 
     const navigate = useNavigate()
 
-    const [user, setUser] = useState('64339abfbdb5568df2189dba')
+   
+
+    //need to change line below
+    
     const [fullName, setFullName] = useState('')
     const [address1, setAddress1] = useState('')
     const [address2, setAddress2] = useState('')
@@ -39,7 +44,7 @@ const NewUserInfoForm = () => {
             setCity('')
             setState('')
             setZip('')
-            navigate('/dash')
+            navigate('/login')
         }
     }, [isSuccess, navigate])
 
@@ -51,12 +56,12 @@ const NewUserInfoForm = () => {
     const onStateChanged = e => setState(e.target.value)
     const onZipChanged = e => setZip(e.target.value)
 
-    const canSave =  !isLoading
+    const canSave =  [fullName,address1,city,state,zip].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUserInfo({user,fullName, address1, address2, city, state, zip})
+            await addNewUserInfo({user,fullName, address1,address2, city, state, zip})
         }
     }
 
@@ -70,7 +75,7 @@ const NewUserInfoForm = () => {
 
             <form className="form" onSubmit={onSaveUserClicked }>
                 <div className="form__title-row">
-                    <h2>New User</h2>
+                    <h2>Create User Profile</h2>
                     <div className="form__action-buttons">
                         <button
                             className="icon-button"

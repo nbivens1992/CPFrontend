@@ -2,9 +2,9 @@ import { useState, useEffect } from "react"
 import { useUpdateQuoteMutation, useDeleteQuoteMutation } from "./quotesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMonument, faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import {  faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
-const EditQuoteForm = ({ quote, users, userInfo}) => {
+const EditQuoteForm = ({ quote, userInfo}) => {
 
     const [updateQuote, {
         isLoading,
@@ -25,7 +25,7 @@ const EditQuoteForm = ({ quote, users, userInfo}) => {
     const [dDate, setDDate] = useState(quote.dDate)
 
 
-    const reqDate = new Date(quote.dDate).toLocaleString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' })
+    const reqDate = new Date(quote.dDate).toLocaleString('en-US', { day: 'numeric', month: 'numeric', year: 'numeric' })
     const [sPrice, setSPrice] = useState(quote.sPrice)
     let [amountDue, setAmountDue] = useState(quote.amountDue)
     const [userId, setUserId] = useState(quote.user)

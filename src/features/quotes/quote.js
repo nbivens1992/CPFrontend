@@ -20,8 +20,16 @@ const Quote = ({ quoteId }) => {
     const navigate = useNavigate()
 
     if (quote) {
+        const options = {
+            timeZone: "UTC",
+            day: "numeric",
+            month: "long",
+            year: "numeric", 
+          };
+        
     
-        const reqDate = new Date(quote.dDate).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+        const reqDate = new Date(quote.dDate).toLocaleString('en-US', options)
+        
 
         const handleEdit = () => navigate(`/dash/quotes/${quoteId}`)
 

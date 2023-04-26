@@ -10,18 +10,6 @@ const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
 
 const EditUserForm = ({ user, userInfo }) => {
 
-    const [updateUser, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateUserMutation()
-
-    const [deleteUser, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteUserMutation()
 
     const [updateUserInfo, {
         userInfoIsLoading,
@@ -38,12 +26,9 @@ const EditUserForm = ({ user, userInfo }) => {
 
     const navigate = useNavigate()
 
-    const [username, setUsername] = useState(user.username)
-    const [validUsername, setValidUsername] = useState(false)
-    const [password, setPassword] = useState('')
-    const [validPassword, setValidPassword] = useState(false)
 
-    const [myUser, setUser] = useState(user.id)
+
+    const [myUser] = useState(user.id)
     const [fullName, setFullName] = useState(userInfo.fullName)
     const [address1, setAddress1] = useState(userInfo.address1)
     const [address2, setAddress2] = useState(userInfo.address2)
@@ -53,23 +38,7 @@ const EditUserForm = ({ user, userInfo }) => {
 
     
 
-    useEffect(() => {
-        setValidUsername(USER_REGEX.test(username))
-    }, [username])
 
-    useEffect(() => {
-        setValidPassword(PWD_REGEX.test(password))
-    }, [password])
-
-    useEffect(() => {
-        console.log(isSuccess)
-        if (isSuccess || isDelSuccess) {
-            setUsername('')
-            setPassword('')
-            navigate('/dash/users')
-        }
-
-    }, [isSuccess, isDelSuccess, navigate])
 
     useEffect(() => {
         console.log(userInfoIsSuccess)
@@ -84,10 +53,6 @@ const EditUserForm = ({ user, userInfo }) => {
         }
     }, [userInfoIsSuccess,userInfoIsDelSuccess, navigate])
 
-    
-
-    const onUsernameChanged = e => setUsername(e.target.value)
-    const onPasswordChanged = e => setPassword(e.target.value)
 
     const onFullNameChanged = e => setFullName(e.target.value)
     const onAddress1Changed = e => setAddress1(e.target.value)
@@ -99,37 +64,29 @@ const EditUserForm = ({ user, userInfo }) => {
 
     const onSaveUserClicked = async (e) => {
         if (address2) {
-            await updateUser({ id: user.id, username, password})
+           // await updateUser({ id: user.id, username, password})
             await updateUserInfo({ id: userInfo.id, user: myUser, fullName, address1, address2, city, state, zip })
             navigate('/dash')
         } else {
-            await updateUser({ id: user.id, username})
+            //await updateUser({ id: user.id, username})
             await updateUserInfo({ id: userInfo.id, user: myUser , fullName, address1, address2, city, state, zip })
             navigate('/dash')
         }
     }
 
     const onDeleteUserClicked = async () => {
-        await deleteUser({ id: user.id })
+        //await deleteUser({ id: user.id })
         await deleteUserInfo({id: userInfo.id})
-        navigate('/dash')
     }
 
    
 
-    let canSave
-    if (password) {
-        canSave = [validUsername, validPassword].every(Boolean) && !isLoading && !userInfoIsLoading
-    } else {
-        canSave = [validUsername].every(Boolean) && !isLoading && !userInfoIsLoading
-    }
-
-    const errClass = (isError || isDelError || userInfoIsError || userInfoIsDelError) ? "errmsg" : "offscreen"
-    const validUserClass = !validUsername ? 'form__input--incomplete' : ''
-    const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
+    let canSave= fullName && address1 && city && state && zip
+    
+    const errClass = (userInfoIsError || userInfoIsDelError) ? "errmsg" : "offscreen"
     
 
-    const errContent = (error?.data?.message || delerror?.data?.message || userInfoDelerror?.data?.message || userInfoError?.data?.message) ?? ''
+    const errContent = (userInfoDelerror?.data?.message || userInfoError?.data?.message) ?? ''
 
 
     const content = (
@@ -157,28 +114,6 @@ const EditUserForm = ({ user, userInfo }) => {
                         </button>
                     </div>
                 </div>
-                <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
-                <input
-                    className={`form__input ${validUserClass}`}
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    value={username}
-                    onChange={onUsernameChanged}
-                />
-
-                <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[empty = no change]</span> <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
-                <input
-                    className={`form__input ${validPwdClass}`}
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChanged}
-                />
                 <label className="form__label" htmlFor="fullName">
                     Full Name: </label>
                 <input

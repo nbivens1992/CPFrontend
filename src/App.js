@@ -5,7 +5,6 @@ import Login from './features/auth/Login'
 import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
 import QuotesList from './features/quotes/QuotesList'
-import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
 import NewUserInfoForm from './features/users/NewUserInfoForm'
 
@@ -23,17 +22,20 @@ function App() {
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
         <Route path="new" element={<NewUserForm />} />
+        
 
         <Route element={<PersistLogin />}>
         <Route element={<Prefetch />}>
+          <Route path="newUserInfo" element={<NewUserInfoForm/>} />
           <Route path="dash" element={<DashLayout />}>
 
             <Route index element={<Welcome />} />
+            <Route path="newUser">
+              <Route path=":id" index element={<NewUserInfoForm />} />
+            </Route>
 
-            <Route path="users">
-              
+            <Route path="editUser">
               <Route path=":id" index element={<EditUser />} />
-              
             </Route>
 
             <Route path="quotes">

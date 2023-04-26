@@ -1,19 +1,24 @@
-import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectUserById } from './usersApiSlice'
 import { selectAllUserInfos } from '../userInfos/userInfosApiSlice'
 import EditUserForm from './EditUserForm'
+import useAuth from '../../hooks/useAuth'
+import { selectAllUsers } from './usersApiSlice'
 
 const EditUser = () => {
-    const { id } = useParams()
+  const users = useSelector(selectAllUsers)
+  const {username} = useAuth()
 
-    const user = useSelector(state => selectUserById(state, id))
+
+  var user = users.find(user => user.username === username)
+    
 
     const userInfos = useSelector(selectAllUserInfos)
 
     var userInfo = userInfos.find(userInfo => {
-        return userInfo.user === id
+        return userInfo.user === user.id
       })
+
+
 
     const content = user ? <EditUserForm user={user} userInfo={userInfo} /> : <p>Loading...</p>
 
