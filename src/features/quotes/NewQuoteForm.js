@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAddNewQuoteMutation } from "./quotesApiSlice"
 import { selectAllQuotes } from './quotesApiSlice'
 import { useSelector } from 'react-redux'
+import {Pricing} from "./pricingModule"
 
 
 const NewQuoteForm = ({ user, userInfo }) => {
@@ -21,6 +22,12 @@ const NewQuoteForm = ({ user, userInfo }) => {
     let [sPrice, setSPrice] = useState('')
     let [amountDue, setAmountDue] = useState('')
     const [userId, setUserId] = useState(user.id)
+    let [getQuoteClicked, setGotQuote] = useState(false)
+    
+
+    let userQuotes = useSelector(selectAllQuotes)
+    let usedBefore = userQuotes.find(({user}) => user ===userInfo.user)
+
 
     useEffect(() => {
         if (isSuccess) {
@@ -29,12 +36,13 @@ const NewQuoteForm = ({ user, userInfo }) => {
             setSPrice('')
             setAmountDue('')
             setUserId('')
+            setGotQuote(false)
             navigate('/dash/quotes')
         }
     }, [isSuccess, navigate])
 
-    let address = userInfo.address1 + ", " + userInfo.city+ ", "+ userInfo.state+ " "+userInfo.zip
-    
+   
+    let [address] = useState(userInfo.address1 + ", " + userInfo.city+ ", "+ userInfo.state+ " "+userInfo.zip)
         
 
     const onGalReqChanged = e => setGalReq(e.target.value)
@@ -44,10 +52,12 @@ const NewQuoteForm = ({ user, userInfo }) => {
 
     const canSave = [galReq, dDate, userId].every(Boolean) && !isLoading
 
+    
+
     const onSaveQuoteClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewQuote({ user: userId, galReq, dDate , sPrice, amountDue })
+            await addNewQuote({ user: userId, galReq, address, dDate , sPrice, amountDue })
         }
     }
 
@@ -57,24 +67,26 @@ const NewQuoteForm = ({ user, userInfo }) => {
     const validDDateClass = !dDate ? "form__input--incomplete" : ''
     const validSPriceClass = !sPrice ? "form__input--incomplete" : ''
     
-    let inState = .04
-    if(userInfo.state === 'TX'){
-        inState = .02;
-    }
+    
+    
+    
+    const onGetQuoteClicked = async (e) => {
+            e.preventDefault()
+            var para1 = document.getElementById("sPrice");
+            var para2 = document.getElementById("amountDue");
+    
+            para1.type = "number"
+            para2.type ="number"
 
-    let userQuotes = useSelector(selectAllQuotes)
-    let usedBefore = 0
-    if(userQuotes.includes(userInfo.username)){
-        usedBefore = .01
+            const pModule = new Pricing(userInfo.state, usedBefore, galReq);
+            sPrice = pModule.suggestedPrice()
+            amountDue=sPrice*galReq    
+            setGotQuote(true) 
+            setSPrice(sPrice)
+            setAmountDue(amountDue)
+            
     }
-
-    let reqFactor = .03
-    if(galReq >= 1000){
-        reqFactor = .02
-    }
-    const startPrice = 1.5
-    const coProfit = .1
-
+    
     const content = (
         <>
             <p className={errClass}>{error?.data?.message}</p>
@@ -92,7 +104,7 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     type="number"
                     autoComplete="off"
                     value={galReq}
-                    required  maxlength="50"
+                    required  
                     onChange={onGalReqChanged}
                 />
 
@@ -108,6 +120,18 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     onChange={onDDateChanged}
                 />
                 <label className="form__label" htmlFor="galReq">
+                    Delivery Address:</label>
+                <input
+                    className={`form__input`}
+                    id="address"
+                    name="address"
+                    type="text"
+                    autoComplete="off"
+                    value={address}
+                    readonly
+                    disabled="disabled"
+                />
+                <label className="form__label" htmlFor="galReq">
                     Price Per Gallon:</label>
                 <input
                     className={`form__input ${validSPriceClass}`}
@@ -117,7 +141,7 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     autoComplete="off"
                     readonly
                     disabled="disabled"
-                    value={sPrice = startPrice*(1+inState-usedBefore+reqFactor+coProfit)}
+                    value={parseFloat(sPrice).toFixed(3)}
                     onChange={onSPriceChanged}
                 />
                 <label className="form__label" htmlFor="galReq">
@@ -128,32 +152,29 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     name="amountDue"
                     type="number"
                     autoComplete="off"
-                    value={amountDue=sPrice*galReq}
+                    value={parseFloat(amountDue).toFixed(2)}
                     readonly
                     disabled="disabled"
                     onChange={onAmountDueChanged}
                 />
-                <label className="form__label" htmlFor="galReq">
-                    Delivery Address:</label>
-                <input
-                    className={`form__input`}
-                    id="address"
-                    name="address"
-                    type="test"
-                    autoComplete="off"
-                    value={address}
-                    readonly
-                    disabled="disabled"
-                />
                 <div className="form__action-buttons">
                         <button
                             className="form__submit-button"
-                            galReq="Save"
-                            disabled={!canSave}
+                            id = "submit"
+                            disabled={!getQuoteClicked || !canSave}
                             text ="Submit"
                         >
                           Submit Quote 
                         </button>
+                        <button
+                            className="form__submit-button"
+                            disabled={!canSave}
+                            text ="Get Quote"
+                            onClick={onGetQuoteClicked}
+                        >
+                          Get Quote
+                        </button>
+                        
                 </div>
 
             </form>

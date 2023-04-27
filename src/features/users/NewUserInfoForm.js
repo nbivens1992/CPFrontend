@@ -93,7 +93,9 @@ const NewUserInfoForm = () => {
                     id="fullName"
                     name="fullName"
                     type="text"
+                    maxLength= "50"
                     value={fullName}
+                    required
                     onChange={onFullNameChanged}
                 />
                 <label className="form__label" htmlFor="address">
@@ -103,6 +105,8 @@ const NewUserInfoForm = () => {
                     id="address"
                     name="address"
                     type="text"
+                    maxLength= "100"
+                    required
                     value={address1}
                     onChange={onAddress1Changed}
                 />
@@ -113,6 +117,7 @@ const NewUserInfoForm = () => {
                     id="address2"
                     name="address2"
                     type="text"
+                    maxLength= "100"
                     value={address2}
                     onChange={onAddress2Changed}
                 />
@@ -123,6 +128,8 @@ const NewUserInfoForm = () => {
                     id="city"
                     name="city"
                     type="text"
+                    maxLength= "100"
+                    required
                     value={city}
                     onChange={onCityChanged}
                 />
@@ -133,6 +140,7 @@ const NewUserInfoForm = () => {
                     id="city"
                     name="city"
                     type="text"
+                    required
                     value={state}
                     onChange={onStateChanged}
                 >
@@ -196,6 +204,9 @@ const NewUserInfoForm = () => {
                     id="Zip"
                     name="Zip"
                     type="text"
+                    minLength="5"
+                    maxLength="9"
+                    required
                     value={zip}
                     onChange={onZipChanged}
                 />

@@ -37,9 +37,9 @@ const Quote = ({ quoteId }) => {
             <tr className="table__row">
                 <td className="table__cell quote__created">{quote.galReq}</td>
                 <td className="table__cell quote__updated">{reqDate}</td>
-                <td className="table__cell quote__title">{quote.sPrice}</td>
-                <td className="table__cell quote__username">{quote.amountDue}</td>
-                <td className="table__cell quote__username">{address}</td>
+                <td className="table__cell quote__title">{parseFloat(quote.sPrice).toFixed(3)}</td>
+                <td className="table__cell quote__username">{parseFloat(quote.amountDue).toFixed(2)}</td>
+                <td className="table__cell quote__username">{quote.address}</td>
                 <td className="table__cell quote__username">{quote.username}</td>
                 <td className="table__cell">
                     <button

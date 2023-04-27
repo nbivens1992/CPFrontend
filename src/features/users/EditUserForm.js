@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
 import { useUpdateUserInfoMutation, useDeleteUserInfoMutation } from "../userInfos/userInfosApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -121,6 +120,8 @@ const EditUserForm = ({ user, userInfo }) => {
                     id="fullName"
                     name="fullName"
                     type="text"
+                    required
+                    maxLength= "50"
                     value={fullName}
                     onChange={onFullNameChanged}
                 />
@@ -131,6 +132,8 @@ const EditUserForm = ({ user, userInfo }) => {
                     id="address"
                     name="address"
                     type="text"
+                    required
+                    maxLength= "100"
                     value={address1}
                     onChange={onAddress1Changed}
                 />
@@ -141,6 +144,7 @@ const EditUserForm = ({ user, userInfo }) => {
                     id="address2"
                     name="address2"
                     type="text"
+                    maxLength= "100"
                     value={address2}
                     onChange={onAddress2Changed}
                 />
@@ -151,6 +155,8 @@ const EditUserForm = ({ user, userInfo }) => {
                     id="city"
                     name="city"
                     type="text"
+                    maxLength= "100"
+                    required
                     value={city}
                     onChange={onCityChanged}
                 />
@@ -161,6 +167,7 @@ const EditUserForm = ({ user, userInfo }) => {
                     id="city"
                     name="city"
                     type="text"
+                    required
                     value={state}
                     onChange={onStateChanged}
                 >
@@ -224,6 +231,9 @@ const EditUserForm = ({ user, userInfo }) => {
                     id="Zip"
                     name="Zip"
                     type="text"
+                    required
+                    minLength="5"
+                    maxLength= "9"
                     value={zip}
                     onChange={onZipChanged}
                 />

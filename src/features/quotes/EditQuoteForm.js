@@ -29,8 +29,9 @@ const EditQuoteForm = ({ quote, userInfo}) => {
     const [sPrice, setSPrice] = useState(quote.sPrice)
     let [amountDue, setAmountDue] = useState(quote.amountDue)
     const [userId, setUserId] = useState(quote.user)
+    const [address] = useState(quote.address)
 
-    let address = userInfo.address1 + ", " + userInfo.city+ ", "+ userInfo.state+ " "+userInfo.zip
+   
 
 
     useEffect(() => {
