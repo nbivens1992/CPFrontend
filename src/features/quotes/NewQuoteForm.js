@@ -46,7 +46,7 @@ const NewQuoteForm = ({ user, userInfo }) => {
         
 
     const onGalReqChanged = e => {
-        if(e.target.value < 0)
+        if(e.target.value <= 0)
             setGalReq('')
         else
             setGalReq(e.target.value)
@@ -127,7 +127,7 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     name="galReq"
                     type="number"
                     autoComplete="off"
-                    min = "0"
+                    min = "1"
                     value={galReq}
                     required 
                     onChange={onGalReqChanged}
