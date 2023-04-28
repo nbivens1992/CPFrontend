@@ -45,8 +45,31 @@ const NewQuoteForm = ({ user, userInfo }) => {
     let [address] = useState(userInfo.address1 + ", " + userInfo.city+ ", "+ userInfo.state+ " "+userInfo.zip)
         
 
-    const onGalReqChanged = e => setGalReq(e.target.value)
-    const onDDateChanged = e => setDDate(e.target.value)
+    const onGalReqChanged = e => {
+        if(e.target.value < 0)
+            setGalReq('')
+        else
+            setGalReq(e.target.value)
+        
+    }
+    const today = new Date().toISOString().substring(0, 10);
+
+
+    const onDDateChanged = e =>{
+                setDDate(e.target.value)
+    }
+
+    const badDateChange = e =>{
+        const inputDate = new Date(e.target.value);
+            const today = new Date();
+            if (inputDate < today) {
+              e.target.value = today.toISOString().split("T")[0];
+              e.target.setCustomValidity('Please enter a date that is today or later');
+            }
+            else{
+                e.target.setCustomValidity('');
+            }
+    }
     const onSPriceChanged = e => setSPrice(e.target.value)
     const onAmountDueChanged = e => setAmountDue(e.target.value)
 
@@ -67,6 +90,7 @@ const NewQuoteForm = ({ user, userInfo }) => {
     const validDDateClass = !dDate ? "form__input--incomplete" : ''
     const validSPriceClass = !sPrice ? "form__input--incomplete" : ''
     
+   
     
     
     
@@ -103,8 +127,9 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     name="galReq"
                     type="number"
                     autoComplete="off"
+                    min = "0"
                     value={galReq}
-                    required  
+                    required 
                     onChange={onGalReqChanged}
                 />
 
@@ -115,8 +140,10 @@ const NewQuoteForm = ({ user, userInfo }) => {
                     id="dDate"
                     name="dDate"
                     type = "date"
+                    min={today}
                     value={dDate}
                     required
+                    onBlur = {badDateChange}
                     onChange={onDDateChanged}
                 />
                 <label className="form__label" htmlFor="galReq">
